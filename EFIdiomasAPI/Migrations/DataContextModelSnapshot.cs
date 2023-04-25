@@ -23,30 +23,23 @@ namespace EFIdiomasAPI.Migrations
 
             modelBuilder.Entity("AlunoTurma", b =>
                 {
-                    b.Property<int>("AlunosId")
-                        .HasColumnType("int");
+                    b.Property<string>("AlunosCPF")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("TurmasId")
-                        .HasColumnType("int");
+                    b.Property<string>("TurmasNumero")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AlunosId", "TurmasId");
+                    b.HasKey("AlunosCPF", "TurmasNumero");
 
-                    b.HasIndex("TurmasId");
+                    b.HasIndex("TurmasNumero");
 
                     b.ToTable("AlunoTurma");
                 });
 
             modelBuilder.Entity("EFIdiomasAPI.Models.Aluno", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("CPF")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -56,18 +49,15 @@ namespace EFIdiomasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("CPF");
 
                     b.ToTable("Alunos");
                 });
 
             modelBuilder.Entity("EFIdiomasAPI.Models.Turma", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Numero")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AnoLetivo")
                         .IsRequired()
@@ -77,11 +67,7 @@ namespace EFIdiomasAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
+                    b.HasKey("Numero");
 
                     b.ToTable("Turmas");
                 });
@@ -90,13 +76,13 @@ namespace EFIdiomasAPI.Migrations
                 {
                     b.HasOne("EFIdiomasAPI.Models.Aluno", null)
                         .WithMany()
-                        .HasForeignKey("AlunosId")
+                        .HasForeignKey("AlunosCPF")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("EFIdiomasAPI.Models.Turma", null)
                         .WithMany()
-                        .HasForeignKey("TurmasId")
+                        .HasForeignKey("TurmasNumero")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
