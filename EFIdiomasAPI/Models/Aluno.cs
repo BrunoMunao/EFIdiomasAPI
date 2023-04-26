@@ -5,12 +5,15 @@ namespace EFIdiomasAPI.Models
 {
 	public class Aluno
 	{
+		[Required]
 		public string Nome { get; set; }
 		[Key]
 		[Required]
 		public string CPF { get; set;}
+		[Required]
+		[EmailAddress]
 		public string Email { get; set; }
-		[JsonIgnore]
+		[Required]
 		public List<Turma> Turmas { get; set; }	
 	}
 }

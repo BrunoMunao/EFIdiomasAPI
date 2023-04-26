@@ -3,6 +3,7 @@
 	public record struct UpdateAlunoDto
 	(
 		string Nome,
-		string Email
+		string Email,
+		List<string> NumerosTurmas
 	);
 }

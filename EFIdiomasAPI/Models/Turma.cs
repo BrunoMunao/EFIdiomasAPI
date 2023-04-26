@@ -8,12 +8,14 @@ namespace EFIdiomasAPI.Models
 	[ApiController]
 	public class Turma
 	{
+		[Required]
 		public string Nome { get; set; }
 		[Key]
 		[Required]
 		public string Numero { get; set; }
+		[Required]
 		public string AnoLetivo { get; set; }
-		[JsonIgnore]
+		[Required]
 		public List<Aluno> Alunos { get; set; }
 	}
 }

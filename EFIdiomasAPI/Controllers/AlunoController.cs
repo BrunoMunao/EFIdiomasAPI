@@ -3,6 +3,7 @@ using EFIdiomasAPI.Data.DTOs;
 using EFIdiomasAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Validadores;
 
 namespace EFIdiomasAPI.Controllers
 {
@@ -18,8 +19,13 @@ namespace EFIdiomasAPI.Controllers
         }
 
 		[HttpPost]
-		public async Task<ActionResult<List<Aluno>>> Create(CreateAlunoDto alunoRequest)
+		public async Task<ActionResult<Aluno>> Create(CreateAlunoDto alunoRequest)
 		{
+			
+			if(!ValidaCPF.ValidarCPF(alunoRequest.CPF) || !ValidaEmail.ValidarEmail(alunoRequest.Email))
+			{
+				return BadRequest();
+			}
 			var novoAluno = new Aluno
 			{
 				Nome = alunoRequest.Nome,
@@ -42,27 +48,35 @@ namespace EFIdiomasAPI.Controllers
 		}
 
 		[HttpGet("{cpf}")]
-		public async Task<ActionResult<List<Aluno>>> Get(string cpf)
+		public async Task<ActionResult<Aluno>> Get(string cpf)
 		{
-			var alunos = await _context.Alunos
-				.Where(a => a.CPF == cpf)
-				.ToListAsync();
+			var aluno = _context.Alunos.Include(a => a.Turmas).FirstOrDefault(a => a.CPF == cpf);
 
-			return alunos;
-		}
-
-		[HttpPut("{cpf}")]
-		public async Task<ActionResult<List<Aluno>>> Put(UpdateAlunoDto alunoRequest, string cpf)
-		{
-			Aluno aluno = await _context.Alunos.FindAsync(cpf);
 			if (aluno == null)
 			{
 				return NotFound();
 			}
 
+			return Ok(aluno);
+		}
+
+		[HttpPut("{cpf}")]
+		public async Task<ActionResult<Aluno>> Put(UpdateAlunoDto alunoRequest, string cpf)
+		{
+			Aluno aluno =  _context.Alunos.Include(a => a.Turmas).FirstOrDefault(a => a.CPF == cpf);
+			if (aluno == null)
+			{
+				return NotFound();
+			}
+
+			var turmas =
+				await _context.Turmas
+				.Where(t => alunoRequest.NumerosTurmas.Contains(t.Numero))
+				.ToListAsync();
+
 			aluno.Nome = alunoRequest.Nome;
 			aluno.Email = alunoRequest.Email;
-			
+			aluno.Turmas = turmas;
 
 			await _context.SaveChangesAsync();
 			return await Get(aluno.CPF);

@@ -44,25 +44,34 @@ namespace EFIdiomasAPI.Controllers
 		[HttpGet("{numero}")]
 		public async Task<ActionResult<List<Turma>>> Get(string numero)
 		{
-			var turmas = await _context.Turmas
-				.Where(t => t.Numero == numero)
-				.ToListAsync();
 
-			return turmas;
-		}
+			var turma = _context.Turmas.Include(t => t.Alunos).FirstOrDefault(t => t.Numero == numero);
 
-		[HttpPut("{numero}")]
-		public async Task<ActionResult<List<Turma>>> Put(UpdateTurmaDto turmaRequest, string numero)
-		{
-			Turma turma = await _context.Turmas.FindAsync(numero);
 			if (turma == null)
 			{
 				return NotFound();
 			}
 
+			return Ok(turma);
+		}
+
+		[HttpPut("{numero}")]
+		public async Task<ActionResult<List<Turma>>> Put(UpdateTurmaDto turmaRequest, string numero)
+		{
+			Turma turma =  _context.Turmas.Include(t => t.Alunos).FirstOrDefault(t => t.Numero == numero);
+			if (turma == null)
+			{
+				return NotFound();
+			}
+
+			var alunos =
+				await _context.Alunos
+				.Where(a => turmaRequest.CPFAlunos.Contains(a.CPF))
+				.ToListAsync();
+
 			turma.Nome = turmaRequest.Nome;
 			turma.AnoLetivo = turmaRequest.AnoLetivo;
-
+			turma.Alunos = alunos;
 
 			await _context.SaveChangesAsync();
 			return await Get(turma.Numero);

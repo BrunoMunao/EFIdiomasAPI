@@ -3,6 +3,7 @@
 	public record struct UpdateTurmaDto
 	(
 		string Nome,
-		string AnoLetivo
+		string AnoLetivo,
+		List<string> CPFAlunos
 	);
 }
