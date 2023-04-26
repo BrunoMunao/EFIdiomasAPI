@@ -1,4 +1,4 @@
-using EFIdiomasAPI.Data;
+using EFIdiomasAPI.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 

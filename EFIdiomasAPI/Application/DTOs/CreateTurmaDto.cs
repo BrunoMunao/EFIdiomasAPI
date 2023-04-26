@@ -1,4 +1,4 @@
-﻿namespace EFIdiomasAPI.Data.DTOs
+﻿namespace EFIdiomasAPI.Application.DTOs
 {
     public record struct CreateTurmaDto(
         string Nome,
