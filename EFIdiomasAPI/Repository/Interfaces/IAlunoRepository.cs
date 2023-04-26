@@ -1,7 +1,7 @@
-﻿using EFIdiomasAPI.Application.DTOs;
-using EFIdiomasAPI.Domain.Entities;
+﻿using EFIdiomasAPI.DTOs;
+using EFIdiomasAPI.Entities;
 
-namespace EFIdiomasAPI.Infrastructure.Interfaces
+namespace EFIdiomasAPI.Repository.Interfaces
 {
     public interface IAlunoRepository
     {

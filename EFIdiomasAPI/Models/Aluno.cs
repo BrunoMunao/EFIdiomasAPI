@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace EFIdiomasAPI.Domain.Entities
+namespace EFIdiomasAPI.Entities
 {
     public class Aluno
     {

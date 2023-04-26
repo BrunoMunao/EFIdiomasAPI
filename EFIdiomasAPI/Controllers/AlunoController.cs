@@ -1,11 +1,11 @@
-﻿using EFIdiomasAPI.Infrastructure.Data;
-using EFIdiomasAPI.Application.DTOs;
-using EFIdiomasAPI.Domain.Entities;
+﻿using EFIdiomasAPI.Data;
+using EFIdiomasAPI.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EFIdiomasAPI.Domain.Interfaces;
+using EFIdiomasAPI.Services.Interfaces;
+using EFIdiomasAPI.DTOs;
 
-namespace EFIdiomasAPI.Presentation.Controllers
+namespace EFIdiomasAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -42,9 +42,9 @@ namespace EFIdiomasAPI.Presentation.Controllers
         [HttpGet("{cpf}")]
         public async Task<ActionResult<Aluno>> Get(string cpf)
         {
-			var aluno = await _alunoService.Get(cpf);
+            var aluno = await _alunoService.Get(cpf);
 
-			if (aluno == null)
+            if (aluno == null)
             {
                 return NotFound();
             }
@@ -55,14 +55,14 @@ namespace EFIdiomasAPI.Presentation.Controllers
         [HttpPut("{cpf}")]
         public async Task<ActionResult<Aluno>> Put(UpdateAlunoDto alunoRequest, string cpf)
         {
-			var aluno = await _alunoService.Update(alunoRequest, cpf);
-			if (aluno == null)
-			{
-				return BadRequest();
-			}
+            var aluno = await _alunoService.Update(alunoRequest, cpf);
+            if (aluno == null)
+            {
+                return BadRequest();
+            }
 
-			return aluno;
-		}
+            return aluno;
+        }
 
         [HttpDelete("{cpf}")]
         public async Task<ActionResult> Delete(string cpf)
@@ -72,7 +72,7 @@ namespace EFIdiomasAPI.Presentation.Controllers
             {
                 return NotFound();
             }
-            
+
             return NoContent();
         }
 

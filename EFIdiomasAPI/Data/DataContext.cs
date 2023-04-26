@@ -1,7 +1,7 @@
-﻿using EFIdiomasAPI.Domain.Entities;
+﻿using EFIdiomasAPI.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EFIdiomasAPI.Infrastructure.Data
+namespace EFIdiomasAPI.Data
 {
     public class DataContext : DbContext
     {

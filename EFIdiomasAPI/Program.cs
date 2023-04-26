@@ -1,8 +1,8 @@
-using EFIdiomasAPI.Domain.Interfaces;
-using EFIdiomasAPI.Domain.Services;
-using EFIdiomasAPI.Infrastructure.Data;
-using EFIdiomasAPI.Infrastructure.Interfaces;
-using EFIdiomasAPI.Infrastructure.Repository;
+using EFIdiomasAPI.Data;
+using EFIdiomasAPI.Repository;
+using EFIdiomasAPI.Repository.Interfaces;
+using EFIdiomasAPI.Services;
+using EFIdiomasAPI.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 

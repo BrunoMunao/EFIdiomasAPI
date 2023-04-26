@@ -1,4 +1,4 @@
-﻿namespace EFIdiomasAPI.Application.DTOs
+﻿namespace EFIdiomasAPI.DTOs
 {
     public record struct CreateAlunoDto(
         string Nome,
