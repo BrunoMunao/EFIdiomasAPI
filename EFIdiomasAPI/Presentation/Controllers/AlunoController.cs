@@ -12,11 +12,9 @@ namespace EFIdiomasAPI.Presentation.Controllers
     public class AlunoController : ControllerBase
     {
         private readonly IAlunoService _alunoService;
-        private readonly DataContext _context;
 
         public AlunoController(IAlunoService alunoService, DataContext context)
         {
-            _context = context;
             _alunoService = alunoService;
         }
 

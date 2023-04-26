@@ -1,5 +1,7 @@
 ﻿using EFIdiomasAPI.Application.DTOs;
 using EFIdiomasAPI.Domain.Entities;
+using EFIdiomasAPI.Domain.Interfaces;
+using EFIdiomasAPI.Domain.Services;
 using EFIdiomasAPI.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,85 +12,70 @@ namespace EFIdiomasAPI.Presentation.Controllers
     [ApiController]
     public class TurmaController : ControllerBase
     {
-        private readonly DataContext _context;
+    
+        private readonly ITurmaService _turmaService;
 
-        public TurmaController(DataContext context)
+        public TurmaController(ITurmaService turmaService)
         {
-            _context = context;
+            _turmaService = turmaService;
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Turma>>> Create(CreateTurmaDto turmaRequest)
+        public async Task<ActionResult<Turma>> Create(CreateTurmaDto turmaRequest)
         {
-            var novaTurma = new Turma
-            {
-                Numero = turmaRequest.Numero,
-                Nome = turmaRequest.Nome,
-                AnoLetivo = turmaRequest.AnoLetivo
-            };
+			var novaTurma = await _turmaService.Create(turmaRequest);
+			if (novaTurma == null)
+			{
+				return BadRequest();
+			}
 
-            var alunos =
-                await _context.Alunos
-                .Where(a => turmaRequest.CPFAlunos.Contains(a.CPF))
-                .ToListAsync();
+			return novaTurma;
+		}
 
+        [HttpGet]
+		public async Task<ActionResult<IEnumerable<Turma>>> GetAll()
+		{
+			var turmas = await _turmaService.GetAll();
 
-            novaTurma.Alunos = alunos;
+			return Ok(turmas);
+		}
 
-            _context.Turmas.Add(novaTurma);
-            await _context.SaveChangesAsync();
+		[HttpGet("{numero}")]
+		public async Task<ActionResult<Turma>> Get(string numero)
+		{
+			var turma = await _turmaService.Get(numero);
 
-            return await Get(novaTurma.Numero);
-        }
+			if (turma == null)
+			{
+				return NotFound();
+			}
 
-        [HttpGet("{numero}")]
-        public async Task<ActionResult<List<Turma>>> Get(string numero)
-        {
+			return Ok(turma);
+		}
 
-            var turma = _context.Turmas.Include(t => t.Alunos).FirstOrDefault(t => t.Numero == numero);
+		[HttpPut("{numero}")]
+		public async Task<ActionResult<Turma>> Put(UpdateTurmaDto turmaRequest, string numero)
+		{
+			var turma = await _turmaService.Update(turmaRequest, numero);
+			if (turma == null)
+			{
+				return BadRequest();
+			}
 
-            if (turma == null)
-            {
-                return NotFound();
-            }
+			return turma;
+		}
 
-            return Ok(turma);
-        }
-
-        [HttpPut("{numero}")]
-        public async Task<ActionResult<List<Turma>>> Put(UpdateTurmaDto turmaRequest, string numero)
-        {
-            Turma turma = _context.Turmas.Include(t => t.Alunos).FirstOrDefault(t => t.Numero == numero);
-            if (turma == null)
-            {
-                return NotFound();
-            }
-
-            var alunos =
-                await _context.Alunos
-                .Where(a => turmaRequest.CPFAlunos.Contains(a.CPF))
-                .ToListAsync();
-
-            turma.Nome = turmaRequest.Nome;
-            turma.AnoLetivo = turmaRequest.AnoLetivo;
-            turma.Alunos = alunos;
-
-            await _context.SaveChangesAsync();
-            return await Get(turma.Numero);
-        }
-
-        [HttpDelete("{numero}")]
+		[HttpDelete("{numero}")]
         public async Task<ActionResult> Delete(string numero)
         {
-            Turma turma = _context.Turmas.FirstOrDefault(a => a.Numero == numero);
-            if (turma == null)
-            {
-                return NotFound();
-            }
-            _context.Turmas.Remove(turma);
-            _context.SaveChanges();
-            return NoContent();
-        }
+			var turma = await _turmaService.Delete(numero);
+			if (turma == null)
+			{
+				return NotFound();
+			}
+
+			return NoContent();
+		}
     }
 
 }

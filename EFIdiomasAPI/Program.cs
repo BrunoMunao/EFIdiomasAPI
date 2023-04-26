@@ -28,8 +28,13 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Injeção de dependências
 builder.Services.AddScoped<IAlunoService, AlunoService>();
 builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
+builder.Services.AddScoped<ITurmaService, TurmaService>();
+builder.Services.AddScoped<ITurmaRepository, TurmaRepository>();
+
 
 var app = builder.Build();
 

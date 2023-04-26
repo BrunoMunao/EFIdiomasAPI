@@ -9,13 +9,13 @@ namespace EFIdiomasAPI.Infrastructure.Repository
 	public class AlunoRepository : IAlunoRepository
 	{
 		private readonly DataContext _context;
-        public AlunoRepository(DataContext context)
-        {
-			_context = context;
-        }
-        public async Task<Aluno> Create(Aluno aluno, List<string> numeroTurmas)
+		public AlunoRepository(DataContext context)
 		{
-			
+			_context = context;
+		}
+		public async Task<Aluno> Create(Aluno aluno, List<string> numeroTurmas)
+		{
+
 			var turmas = await _context.Turmas
 				.Where(t => numeroTurmas.Contains(t.Numero))
 				.ToListAsync();
@@ -79,20 +79,20 @@ namespace EFIdiomasAPI.Infrastructure.Repository
 			return await Get(aluno.CPF);
 		}
 
-public async Task<Aluno> Delete(string cpf)
-{
-    var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.CPF == cpf);
+		public async Task<Aluno> Delete(string cpf)
+		{
+			var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.CPF == cpf);
 
-    if (aluno == null)
-    {
-        return null;
-    }
+			if (aluno == null)
+			{
+				return null;
+			}
 
-    _context.Alunos.Remove(aluno);
-    await _context.SaveChangesAsync();
+			_context.Alunos.Remove(aluno);
+			await _context.SaveChangesAsync();
 
-    return aluno;
-}
+			return aluno;
+		}
 
 	}
 }
