@@ -1,4 +1,8 @@
+using EFIdiomasAPI.Domain.Interfaces;
+using EFIdiomasAPI.Domain.Services;
 using EFIdiomasAPI.Infrastructure.Data;
+using EFIdiomasAPI.Infrastructure.Interfaces;
+using EFIdiomasAPI.Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -20,9 +24,12 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
 {
 	options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IAlunoService, AlunoService>();
+builder.Services.AddScoped<IAlunoRepository, AlunoRepository>();
 
 var app = builder.Build();
 

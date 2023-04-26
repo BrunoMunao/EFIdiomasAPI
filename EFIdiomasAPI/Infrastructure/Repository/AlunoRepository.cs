@@ -27,24 +27,72 @@ namespace EFIdiomasAPI.Infrastructure.Repository
 			return await Get(aluno.CPF);
 		}
 
-		public Task<Aluno> Get(string cpf)
+		public async Task<Aluno> Get(string cpf)
 		{
-			throw new NotImplementedException();
+			var aluno = await _context.Alunos.Include(a => a.Turmas).FirstOrDefaultAsync(a => a.CPF == cpf);
+
+			if (aluno == null)
+			{
+				throw new Exception($"Aluno com CPF {cpf} não encontrado");
+			}
+
+			return aluno;
 		}
 
-		public Task<IEnumerable<Aluno>> GetAll()
+		public async Task<IEnumerable<Aluno>> GetAll()
 		{
-			throw new NotImplementedException();
+			var alunos = await _context.Alunos.Include(a => a.Turmas).Select(a => new Aluno
+			{
+				Nome = a.Nome,
+				CPF = a.CPF,
+				Email = a.Email,
+				Turmas = a.Turmas.Select(t => new Turma
+				{
+					Nome = t.Nome,
+					Numero = t.Numero,
+					AnoLetivo = t.AnoLetivo,
+				}).ToList()
+			}).ToListAsync();
+
+			return alunos;
 		}
 
-		public Task<Aluno> Update(UpdateAlunoDto alunoRequest, string cpf)
+
+		public async Task<Aluno> Update(UpdateAlunoDto alunoRequest, string cpf)
 		{
-			throw new NotImplementedException();
+			var aluno = await _context.Alunos.Include(a => a.Turmas).FirstOrDefaultAsync(a => a.CPF == cpf);
+			if (aluno == null)
+			{
+				return null;
+			}
+
+			var turmas =
+				await _context.Turmas
+				.Where(t => alunoRequest.NumerosTurmas.Contains(t.Numero))
+				.ToListAsync();
+
+			aluno.Nome = alunoRequest.Nome;
+			aluno.Email = alunoRequest.Email;
+			aluno.Turmas = turmas;
+
+			await _context.SaveChangesAsync();
+			return await Get(aluno.CPF);
 		}
 
-		public Task<Aluno> Delete(string cpf)
-		{
-			throw new NotImplementedException();
-		}
+public async Task<Aluno> Delete(string cpf)
+{
+    var aluno = await _context.Alunos.FirstOrDefaultAsync(a => a.CPF == cpf);
+
+    if (aluno == null)
+    {
+        return null;
+    }
+
+    _context.Alunos.Remove(aluno);
+    await _context.SaveChangesAsync();
+
+    return aluno;
+}
+
 	}
 }
