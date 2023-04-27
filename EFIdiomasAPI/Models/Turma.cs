@@ -16,6 +16,7 @@ namespace EFIdiomasAPI.Entities
         [Required]
         public string AnoLetivo { get; set; }
         [Required]
-        public List<Aluno> Alunos { get; set; }
+		[MaxLength(5)]
+		public List<Aluno> Alunos { get; set; }
     }
 }

@@ -18,7 +18,8 @@ namespace EFIdiomasAPI.Services
 
         public async Task<Aluno> Create(CreateAlunoDto alunoRequest)
         {
-            if (!ValidaCPF.ValidarCPF(alunoRequest.CPF) || !ValidaEmail.ValidarEmail(alunoRequest.Email))
+			// Restrição 2: O e-mail e CPF do aluno não pode ser inválido;
+			if (!ValidaCPF.ValidarCPF(alunoRequest.CPF) || !ValidaEmail.ValidarEmail(alunoRequest.Email)) 
             {
                 return null;
             }
