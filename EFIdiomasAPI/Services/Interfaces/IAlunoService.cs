@@ -6,7 +6,7 @@ namespace EFIdiomasAPI.Services.Interfaces
 {
     public interface IAlunoService
     {
-        Task<Aluno> Create(CreateAlunoDto alunoRequest);
+		Task<Aluno> Create(CreateAlunoDto alunoRequest);
         Task<Aluno> Get(string cpf);
         Task<IEnumerable<Aluno>> GetAll();
         Task<Aluno> Update(UpdateAlunoDto alunoRequest, string cpf);

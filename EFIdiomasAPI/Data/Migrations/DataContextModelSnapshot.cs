@@ -33,7 +33,7 @@ namespace EFIdiomasAPI.Migrations
 
                     b.HasIndex("TurmasNumero");
 
-                    b.ToTable("AlunoTurma");
+                    b.ToTable("AlunoTurma", (string)null);
                 });
 
             modelBuilder.Entity("EFIdiomasAPI.Entities.Aluno", b =>
@@ -51,7 +51,7 @@ namespace EFIdiomasAPI.Migrations
 
                     b.HasKey("CPF");
 
-                    b.ToTable("Alunos");
+                    b.ToTable("Alunos", (string)null);
                 });
 
             modelBuilder.Entity("EFIdiomasAPI.Entities.Turma", b =>
@@ -69,7 +69,7 @@ namespace EFIdiomasAPI.Migrations
 
                     b.HasKey("Numero");
 
-                    b.ToTable("Turmas");
+                    b.ToTable("Turmas", (string)null);
                 });
 
             modelBuilder.Entity("AlunoTurma", b =>

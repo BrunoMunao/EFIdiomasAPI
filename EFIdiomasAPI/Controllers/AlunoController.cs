@@ -1,9 +1,10 @@
 ﻿using EFIdiomasAPI.Data;
 using EFIdiomasAPI.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using EFIdiomasAPI.Services.Interfaces;
 using EFIdiomasAPI.DTOs;
+
+
 
 namespace EFIdiomasAPI.Controllers
 {
@@ -18,63 +19,97 @@ namespace EFIdiomasAPI.Controllers
             _alunoService = alunoService;
         }
 
-        [HttpPost]
+		[HttpPost]
         public async Task<ActionResult<Aluno>> Create(CreateAlunoDto alunoRequest)
         {
-            var novoAluno = await _alunoService.Create(alunoRequest);
-            if (novoAluno == null)
-            {
-                return BadRequest();
-            }
-
-            return novoAluno;
-        }
+			try
+			{
+				var aluno = await _alunoService.Create(alunoRequest);
+				return Ok(aluno);
+			}
+			catch (ArgumentException ex)
+			{
+				return BadRequest(ex.Message);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Aluno>>> GetAll()
         {
-            var alunos = await _alunoService.GetAll();
-
-            return Ok(alunos);
-        }
+            try
+            {
+                var alunos = await _alunoService.GetAll();
+				if (alunos == null)
+				{
+					return NotFound();
+				}
+				return Ok(alunos);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
 
 
         [HttpGet("{cpf}")]
         public async Task<ActionResult<Aluno>> Get(string cpf)
         {
-            var aluno = await _alunoService.Get(cpf);
-
-            if (aluno == null)
+            try
             {
-                return NotFound();
-            }
+				var aluno = await _alunoService.Get(cpf);
+				if (aluno == null)
+				{
+					return NotFound();
+				}
+				return Ok(aluno);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
 
-            return Ok(aluno);
-        }
+		}
 
         [HttpPut("{cpf}")]
         public async Task<ActionResult<Aluno>> Put(UpdateAlunoDto alunoRequest, string cpf)
         {
-            var aluno = await _alunoService.Update(alunoRequest, cpf);
-            if (aluno == null)
-            {
-                return BadRequest();
-            }
-
-            return aluno;
+            try 
+			{
+				var aluno = await _alunoService.Update(alunoRequest, cpf);
+				if (aluno == null)
+				{
+					return BadRequest();
+				}
+				return Ok(aluno);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
         }
 
         [HttpDelete("{cpf}")]
         public async Task<ActionResult> Delete(string cpf)
         {
-            var aluno = await _alunoService.Delete(cpf);
-            if (aluno == null)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
+			try
+			{
+				var aluno = await _alunoService.Delete(cpf);
+				if (aluno == null)
+				{
+					return NotFound();
+				}
+				return NoContent();
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+			}
+		}
 
     }
 }
