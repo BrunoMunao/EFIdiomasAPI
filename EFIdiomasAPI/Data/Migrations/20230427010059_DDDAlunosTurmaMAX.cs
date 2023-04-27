@@ -5,7 +5,7 @@
 namespace EFIdiomasAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class AlunoETurmaSemId : Migration
+    public partial class DDDAlunosTurmaMAX : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

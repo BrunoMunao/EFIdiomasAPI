@@ -36,7 +36,7 @@ namespace EFIdiomasAPI.Migrations
                     b.ToTable("AlunoTurma");
                 });
 
-            modelBuilder.Entity("EFIdiomasAPI.Models.Aluno", b =>
+            modelBuilder.Entity("EFIdiomasAPI.Entities.Aluno", b =>
                 {
                     b.Property<string>("CPF")
                         .HasColumnType("nvarchar(450)");
@@ -54,7 +54,7 @@ namespace EFIdiomasAPI.Migrations
                     b.ToTable("Alunos");
                 });
 
-            modelBuilder.Entity("EFIdiomasAPI.Models.Turma", b =>
+            modelBuilder.Entity("EFIdiomasAPI.Entities.Turma", b =>
                 {
                     b.Property<string>("Numero")
                         .HasColumnType("nvarchar(450)");
@@ -74,13 +74,13 @@ namespace EFIdiomasAPI.Migrations
 
             modelBuilder.Entity("AlunoTurma", b =>
                 {
-                    b.HasOne("EFIdiomasAPI.Models.Aluno", null)
+                    b.HasOne("EFIdiomasAPI.Entities.Aluno", null)
                         .WithMany()
                         .HasForeignKey("AlunosCPF")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EFIdiomasAPI.Models.Turma", null)
+                    b.HasOne("EFIdiomasAPI.Entities.Turma", null)
                         .WithMany()
                         .HasForeignKey("TurmasNumero")
                         .OnDelete(DeleteBehavior.Cascade)

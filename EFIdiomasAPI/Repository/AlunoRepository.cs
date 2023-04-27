@@ -3,6 +3,7 @@ using EFIdiomasAPI.Entities;
 using EFIdiomasAPI.DTOs;
 using EFIdiomasAPI.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EFIdiomasAPI.Repository
 {
@@ -19,19 +20,14 @@ namespace EFIdiomasAPI.Repository
 				.Where(t => numeroTurmas.Contains(t.Numero))
 				.ToListAsync();
 
-			if (numeroTurmas == null || numeroTurmas.Count == 0) // Restrição 1: Aluno deve ser cadastrado com no mínimo 1 turma;
+			if (numeroTurmas == null || numeroTurmas.Count == 0 || turmas.IsNullOrEmpty()) // Restrição 1: Aluno deve ser cadastrado com no mínimo 1 turma;
 			{
 				throw new Exception("O aluno deve ser associado a pelo menos uma turma");
 			}
 
 			if (turmas.Count > 5) // Restrição 4: uma turma não pode ter mais de 5 alunos
 			{
-				throw new Exception($"O número máximo de turmas permitido é 5");
-			}
-
-			if (await _context.Alunos.AnyAsync(a => a.CPF == aluno.CPF)) // Restrição 3: não pode haver alunos duplicados
-			{
-				throw new Exception($"Aluno com CPF {aluno.CPF} já existe");
+				throw new Exception($"O número máximo de alunos na turma permitido é 5");
 			}
 
 			aluno.Turmas = turmas;
