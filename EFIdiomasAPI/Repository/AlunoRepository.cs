@@ -35,7 +35,7 @@ namespace EFIdiomasAPI.Repository
 			foreach (var turma in turmas) // Restrição 4: uma turma não pode ter mais de 5 alunos
 			{
 				Console.WriteLine($"Turma {turma.Numero} tem {turma.Alunos.Count} alunos.");
-				if (turma.Alunos.Count > 5)
+				if (turma.Alunos.Count >= 5)
 				{
 					throw new Exception($"O número máximo de alunos na turma permitido é 5.");
 				}
@@ -102,6 +102,7 @@ namespace EFIdiomasAPI.Repository
 			var turmas =
 				await _context.Turmas
 				.Where(t => alunoRequest.NumerosTurmas.Contains(t.Numero))
+				.Include(t => t.Alunos)
 				.ToListAsync();
 
 			// Verifica se cada turma tem menos de 5 alunos (Restrição 4)

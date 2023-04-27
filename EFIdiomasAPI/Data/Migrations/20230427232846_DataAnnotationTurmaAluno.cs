@@ -5,7 +5,7 @@
 namespace EFIdiomasAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class DDDAlunosTurmaMAX : Migration
+    public partial class DataAnnotationTurmaAluno : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +15,7 @@ namespace EFIdiomasAPI.Migrations
                 columns: table => new
                 {
                     CPF = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -28,7 +28,7 @@ namespace EFIdiomasAPI.Migrations
                 columns: table => new
                 {
                     Numero = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Nome = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AnoLetivo = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>

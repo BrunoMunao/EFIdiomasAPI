@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFIdiomasAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230427010059_DDDAlunosTurmaMAX")]
-    partial class DDDAlunosTurmaMAX
+    [Migration("20230427232846_DataAnnotationTurmaAluno")]
+    partial class DataAnnotationTurmaAluno
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,8 @@ namespace EFIdiomasAPI.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("CPF");
 
@@ -68,7 +69,8 @@ namespace EFIdiomasAPI.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Numero");
 
