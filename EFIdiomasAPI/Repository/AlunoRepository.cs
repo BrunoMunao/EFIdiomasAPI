@@ -94,6 +94,7 @@ namespace EFIdiomasAPI.Repository
 		{
 			// Busca o aluno a ser atualizado
 			var aluno = await _context.Alunos.Include(a => a.Turmas).FirstOrDefaultAsync(a => a.CPF == cpf);
+
 			if (aluno == null)
 			{
 				throw new ArgumentException($"Aluno com CPF {cpf} não encontrado", nameof(cpf));
@@ -108,9 +109,19 @@ namespace EFIdiomasAPI.Repository
 			// Verifica se cada turma tem menos de 5 alunos (Restrição 4)
 			foreach (var turma in turmas)
 			{
-				if (turma.Alunos.Count >= 5)
+				if (turma.Alunos.Contains(aluno))
 				{
-					throw new InvalidOperationException($"Não é possível matricular o aluno {aluno.Nome} na turma {turma.Nome} porque já atingiu o número máximo de alunos.");
+					if (turma.Alunos.Count > 5)
+					{
+						throw new InvalidOperationException($"Não é possível matricular o aluno {aluno.Nome} na turma {turma.Nome} porque já atingiu o número máximo de alunos.");
+					}
+				}
+				else
+				{
+					if (turma.Alunos.Count >= 5)
+					{
+						throw new InvalidOperationException($"Não é possível matricular o aluno {aluno.Nome} na turma {turma.Nome} porque já atingiu o número máximo de alunos.");
+					}
 				}
 			}
 
