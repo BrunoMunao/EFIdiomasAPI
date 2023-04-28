@@ -18,9 +18,14 @@ namespace EFIdiomasAPI.Services
 		public async Task<Aluno> Create(CreateAlunoDto alunoRequest)
 		{
 			// Verifica se o CPF e e-mail são válidos
-			if (!ValidaCPF.ValidarCPF(alunoRequest.CPF) || !ValidaEmail.ValidarEmail(alunoRequest.Email))
+			if (!ValidaCPF.ValidarCPF(alunoRequest.CPF))
 			{
-				throw new ArgumentException("CPF ou e-mail inválidos.");
+				throw new ArgumentException("CPF inválido.");
+			}
+
+			if (!ValidaEmail.ValidarEmail(alunoRequest.Email))
+			{
+				throw new ArgumentException("Email inválido.");
 			}
 
 			// Verifica se o aluno está associado a pelo menos uma turma
@@ -33,7 +38,7 @@ namespace EFIdiomasAPI.Services
 			var novoAluno = new Aluno
 			{
 				Nome = alunoRequest.Nome,
-				CPF = alunoRequest.CPF,
+				CPF = Convert.ToUInt64(alunoRequest.CPF).ToString(@"000\.000\.000\-00"),
 				Email = alunoRequest.Email
 			};
 
@@ -82,6 +87,11 @@ namespace EFIdiomasAPI.Services
 		{
 			try
 			{
+				if (!ValidaEmail.ValidarEmail(alunoRequest.Email))
+				{
+					throw new ArgumentException("Email inválido.");
+				}
+
 				// Retorna o aluno com as infos atualizadas
 				return await _repository.Update(alunoRequest, cpf);
 			}

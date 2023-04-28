@@ -45,7 +45,7 @@ namespace EFIdiomasAPI.Repository
 			aluno.Turmas = turmas;
 			_context.Alunos.Add(aluno);
 			await _context.SaveChangesAsync();
-			return await Get(aluno.CPF);
+			return aluno;
 		}
 
 		// Método para buscar um aluno pelo CPF
@@ -131,7 +131,7 @@ namespace EFIdiomasAPI.Repository
 
 			// Salva as alteraçoes feitas retornando o aluno atualizado
 			await _context.SaveChangesAsync();
-			return await Get(aluno.CPF);
+			return aluno;
 		}
 
 		// Método para excluir o aluno
